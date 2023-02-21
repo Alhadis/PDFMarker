@@ -1,0 +1,50 @@
+%!PS
+
+(/Users/Alhadis/Labs/Inspect.ps/inspect.ps) run
+
+% Compute the bounding box for the given string
+/measuretext { % <string> measuretext [llx lly urx ury]
+	currentpoint gsave newpath moveto
+	false charpath flattenpath pathbbox
+	grestore [ 5 1 roll ]
+} bind def
+
+
+/PDFMark.begin {
+	/PDFMark.current-feature exch def
+	/PDFMark.current-params  exch def
+
+	currentdict <<
+		/show {
+			systemdict /dup get exec measuretext
+			systemdict /mark get exec
+			PDFMark.current-params begin
+				/Rect 3 -1 roll def
+				currentdict {} forall
+				currentdict length 2 mul array astore
+			end aload pop
+			PDFMark.current-feature pdfmark
+			systemdict /show get exec
+		}
+	>> begin begin
+} bind def
+
+/PDFMark.end {
+	end end
+} bind def
+
+% ===============
+<<
+	/Title (The K&R Greeting)
+	/Dest  /knr-greeting
+	/Level 1
+>> /OUT PDFMark.begin
+
+/Times-Roman findfont 10 scalefont setfont
+100 100 moveto
+(Hello, world.) show
+PDFMark.end
+
+PDFMark.current-feature ?
+
+showpage
