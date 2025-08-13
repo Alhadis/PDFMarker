@@ -1,0 +1,19 @@
+%!PS
+[(inspect.ps) (pdfmarker.ps)] % Load libraries
+{findlibfile {exch pop run} {undefinedfilename} ifelse} forall
+
+
+<<
+	/Title (The K&R Greeting)
+	/Dest  /knr-greeting
+	/Level 1
+>> /OUT PDFMark.begin
+
+/Times-Roman findfont 10 scalefont setfont
+100 100 moveto
+(Hello, world.) show
+PDFMark.end
+
+PDFMark.current-feature ?
+
+showpage
